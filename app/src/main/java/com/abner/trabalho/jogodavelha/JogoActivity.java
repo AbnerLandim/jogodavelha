@@ -2,6 +2,7 @@ package com.abner.trabalho.jogodavelha;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class JogoActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView jogadorXScore, jogadorOScore, playerStatus;
+    private TextView jogadorXScore, jogadorOScore, playerStatus, jogadorXNome, jogadorONome;
     private Button[] buttons = new Button[9];
     private Button resetGame;
 
@@ -34,10 +35,17 @@ public class JogoActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.jogo_activity);
         setTitle("Jogo da Velha");
 
+        Intent namesIntent = getIntent();
+
+        jogadorXNome = findViewById(R.id.playerX);
+        jogadorONome = findViewById(R.id.playerO);
         jogadorXScore = findViewById(R.id.playerXScore);
         jogadorOScore = findViewById(R.id.playerOScore);
         playerStatus = findViewById(R.id.playerStatus);
         resetGame = findViewById(R.id.resetGame);
+
+        jogadorXNome.setText(namesIntent.getStringExtra("jogadorXNome") + " (X)");
+        jogadorONome.setText(namesIntent.getStringExtra("jogadorONome") + " (O)");
 
         for (int i = 0; i < buttons.length; i++) {
             String buttonId = "btn_" + i;
@@ -75,12 +83,12 @@ public class JogoActivity extends AppCompatActivity implements View.OnClickListe
             if(vezDoJogadorX) {
                 jogadorXScoreCount++;
                 atualizarPontuacoes();
-                Toast.makeText(this, "Jogador X ganhou!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, jogadorXNome.getText().toString() + " ganhou a rodada!", Toast.LENGTH_SHORT).show();
                 jogarNovamente();
             } else {
                 jogadorOScoreCount++;
                 atualizarPontuacoes();
-                Toast.makeText(this, "Jogador O ganhou!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, jogadorONome.getText().toString() + " ganhou a rodada!", Toast.LENGTH_SHORT).show();
                 jogarNovamente();
             }
         } else if(roundCount == 9) {
@@ -90,8 +98,8 @@ public class JogoActivity extends AppCompatActivity implements View.OnClickListe
             vezDoJogadorX = !vezDoJogadorX;
         }
 
-        if (jogadorXScoreCount > jogadorOScoreCount) playerStatus.setText("Jogador X está na frente");
-        else if (jogadorXScoreCount < jogadorOScoreCount) playerStatus.setText("Jogador O está na frente");
+        if (jogadorXScoreCount > jogadorOScoreCount) playerStatus.setText(jogadorXNome.getText().toString() + " está na frente");
+        else if (jogadorXScoreCount < jogadorOScoreCount) playerStatus.setText(jogadorONome.getText().toString() + " está na frente");
         else if (jogadorXScoreCount == jogadorOScoreCount && jogadorXScoreCount > 0) playerStatus.setText("Temos um empate aqui");
 
         resetGame.setOnClickListener(new View.OnClickListener() {
