@@ -67,6 +67,8 @@ public class JogoActivity extends AppCompatActivity implements View.OnClickListe
         String buttonId = view.getResources().getResourceEntryName(view.getId());
         int posicaoPressionada = Integer.parseInt(buttonId.substring(buttonId.length()-1, buttonId.length()));
 
+        playerStatus.setText("");
+
         if (vezDoJogadorX) {
             ((Button) view).setText("X");
             ((Button) view).setTextColor(Color.parseColor("#FFC34A"));
@@ -94,9 +96,7 @@ public class JogoActivity extends AppCompatActivity implements View.OnClickListe
         } else if(roundCount == 9) {
             jogarNovamente();
             Toast.makeText(this, "Empate!", Toast.LENGTH_SHORT).show();
-        } else {
-            vezDoJogadorX = !vezDoJogadorX;
-        }
+        } else vezDoJogadorX = !vezDoJogadorX;
 
         if (jogadorXScoreCount > jogadorOScoreCount) playerStatus.setText(jogadorXNome.getText().toString() + " está na frente");
         else if (jogadorXScoreCount < jogadorOScoreCount) playerStatus.setText(jogadorONome.getText().toString() + " está na frente");
@@ -108,7 +108,7 @@ public class JogoActivity extends AppCompatActivity implements View.OnClickListe
                 jogarNovamente();
                 jogadorXScoreCount = 0;
                 jogadorOScoreCount = 0;
-                playerStatus.setText("");
+                playerStatus.setText("Vez de " + jogadorXNome.getText().toString());
                 atualizarPontuacoes();
             }
         });
